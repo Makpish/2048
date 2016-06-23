@@ -3,9 +3,9 @@ from msvcrt import getch
 
 def print_board(board,moves,score):
     for i in board:
-            print("-------------------")
-            print(" |",i[0],"|",i[1],"|",i[2],"|",i[3],"|")
-    print("-------------------","Moves=",moves,"Score=",score)
+            print("-----------------------------------")
+            print("|%7s|%7s|%7s|%7s|" %(str(i[0]),str(i[1]),str(i[2]),str(i[3])))
+    print("-----------------------------------","Moves=",moves,"Score=",score)
 
 
 def next_number():
@@ -162,6 +162,7 @@ board[int(pos[0]/10)][int(pos[0]%10)]=nxt
 moves=0
 score=0
 print_board(board,moves,score)
+over=[]
 while True:
     c=ord(getch())
     if c==224:
@@ -170,14 +171,32 @@ while True:
     y=0
     if c==80:
         x,y=down(board)
+        if x==0 and over.count(1)==0:
+            over.append(1)
+        elif x!=0 and over.count(1)==1:
+            over.remove(1)
     if c==72:
         x,y=up(board)
+        if x==0 and over.count(2)==0:
+            over.append(2)
+        elif x!=0 and over.count(2)==1:
+            over.remove(2)
     if c==75:
         x,y=left(board)
+        if x==0 and over.count(3)==0:
+            over.append(3)
+        elif x!=0 and over.count(3)==1:
+            over.remove(3)
     if c==77:
         x,y=right(board)
+        if x==0 and over.count(4)==0:
+            over.append(4)
+        elif x!=0 and over.count(4)==1:
+            over.remove(4)
     moves=moves+x
     score=score+y
+    if len(over)==4:
+        break
     if x!=0:
         nxt=next_number()
         pos=next_position(board)
@@ -186,3 +205,7 @@ while True:
         board[int(pos[0]/10)][int(pos[0]%10)]=nxt
     print_board(board,moves,score)
     
+print("Score=",score)
+print("Moves=",moves)
+print("Press any key to continue...")
+getch()
